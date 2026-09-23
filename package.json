@@ -10,24 +10,30 @@
     "workspaces": [
         "packages/core",
         "packages/db",
-        "apps/worker"
+        "apps/worker",
+        "apps/web"
     ],
     "scripts": {
-        "build": "npm run build -w @greenlie/core -w @greenlie/db -w @greenlie/worker",
-    "typecheck": "tsc --noEmit",
+        "build": "npm run build -w @greenlie/core -w @greenlie/db -w @greenlie/worker -w @greenlie/web",
+        "typecheck": "tsc --noEmit",
         "lint": "eslint .",
         "test": "vitest run",
         "test:watch": "vitest",
         "coverage": "vitest run --coverage",
-        "check": "npm run typecheck && npm run lint && npm run coverage"
+        "check": "npm run typecheck && npm run lint && npm run coverage",
+        "e2e": "npm run build -w @greenlie/core -w @greenlie/db && playwright test -c apps/web/playwright.config.ts"
     },
     "devDependencies": {
+        "@axe-core/playwright": "^4.13.0",
         "@electric-sql/pglite": "^0.5.8",
         "@electric-sql/pglite-socket": "^0.2.11",
         "@eslint/js": "^10.0.1",
+        "@playwright/test": "^1.63.0",
         "@types/node": "^26.6.2",
         "@types/nodemailer": "^8.0.2",
         "@types/pg": "^8.23.1",
+        "@types/react": "^19.3.0",
+        "@types/react-dom": "^19.3.0",
         "@vitest/coverage-v8": "^5.0.1",
         "drizzle-kit": "^0.31.11",
         "eslint": "^10.11.0",

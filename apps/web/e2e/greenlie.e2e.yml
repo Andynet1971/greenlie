@@ -1,0 +1,36 @@
+# Fixture config for the Playwright suite. The token is in the clear on purpose:
+# this file only ever talks to a throwaway in-memory PGlite database.
+
+defaults:
+  every: 5m
+  timeout: 10s
+
+checks:
+  - id: marketing-site
+    name: Marketing site
+    type: http
+    url: https://example.com
+    slowAfter: 2s
+
+  - id: job-feed
+    name: Job feed API
+    type: json-volume
+    url: https://api.example.com/jobs
+    path: $.data.jobs
+    thinBelow: 0.5
+    baselineWindow: 20
+    minSamples: 5
+
+  - id: nightly-backup
+    name: Nightly backup
+    type: heartbeat
+    every: 24h
+    grace: 30m
+    token: e2e-test-token-nightly-backup
+
+  - id: never-pinged
+    name: Weekly export
+    type: heartbeat
+    every: 24h
+    grace: 30m
+    token: e2e-test-token-never-pinged

@@ -23,8 +23,19 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       include: ['packages/*/src/**/*.ts', 'apps/*/src/**/*.ts'],
-      // main.ts only wires things together; testing.ts is the test harness itself.
-      exclude: ['**/*.test.ts', '**/index.ts', '**/main.ts', '**/testing.ts', '**/test-helpers/**'],
+      // main.ts and lib/server.ts only wire things together; testing.ts is the
+      // test harness itself. Pages and components have no Vitest render target —
+      // Playwright e2e covers them instead.
+      exclude: [
+        '**/*.test.ts',
+        '**/index.ts',
+        '**/main.ts',
+        '**/testing.ts',
+        '**/test-helpers/**',
+        'apps/web/src/lib/server.ts',
+        'apps/web/src/app/**',
+        'apps/web/src/components/**',
+      ],
       thresholds: {
         // The core is pure logic: every line and branch is reachable from a test.
         'packages/core/src/**': { lines: 100, branches: 100, functions: 100, statements: 100 },

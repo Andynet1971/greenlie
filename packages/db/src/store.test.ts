@@ -38,6 +38,18 @@ describe('ensureCheck', () => {
   });
 });
 
+describe('getState', () => {
+  it('returns undefined for a check nobody has seen yet, without creating it', async () => {
+    expect(await store.getState('ghost')).toBeUndefined();
+    expect(await store.getState('ghost')).toBeUndefined();
+  });
+
+  it('returns the row once the check exists', async () => {
+    await store.ensureCheck('api', t(0));
+    expect(await store.getState('api')).toMatchObject({ checkId: 'api', watchingSince: t(0) });
+  });
+});
+
 describe('announce and recordPing', () => {
   it('update only the check they name', async () => {
     await store.ensureCheck('a', t(0));

@@ -9,6 +9,8 @@ export type Database = PgDatabase<PgQueryResultHKT, Record<string, unknown>>;
 export interface Store {
   /** Creates the state row on first sight; `now` becomes `watchingSince`. */
   ensureCheck(checkId: string, now: Date): Promise<CheckState>;
+  /** Read-only: the dashboard must never create a row just by looking. */
+  getState(checkId: string): Promise<CheckState | undefined>;
   insertRun(run: NewRun): Promise<void>;
   /** The latest verdicts, oldest first. */
   recentVerdicts(checkId: string, limit: number): Promise<Verdict[]>;
@@ -33,6 +35,11 @@ export function createStore(db: Database): Store {
       await db.insert(checkState).values({ checkId, watchingSince: now }).onConflictDoNothing();
       const [state] = await db.select().from(checkState).where(eq(checkState.checkId, checkId));
       if (!state) throw new Error(`check_state row for "${checkId}" vanished right after being created`);
+      return state;
+    },
+
+    async getState(checkId) {
+      const [state] = await db.select().from(checkState).where(eq(checkState.checkId, checkId));
       return state;
     },
 

@@ -1,0 +1,20 @@
+{
+  "name": "@greenlie/web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "predev": "npm run build -w @greenlie/core -w @greenlie/db",
+    "dev": "next dev --port 3000",
+    "prebuild": "npm run build -w @greenlie/core -w @greenlie/db",
+    "build": "next build",
+    "start": "next start --port 3000"
+  },
+  "dependencies": {
+    "@greenlie/core": "*",
+    "@greenlie/db": "*",
+    "next": "^16.3.6",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
+  }
+}

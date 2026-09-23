@@ -3,6 +3,8 @@
   "compilerOptions": {
     "noEmit": true,
     "types": ["node"],
+    "jsx": "react-jsx",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
     // Type-check the workspace against sources, not against built dist/ folders.
     "paths": {
       "@greenlie/core": ["./packages/core/src/index.ts"],
@@ -10,5 +12,10 @@
       "@greenlie/db/testing": ["./packages/db/src/testing.ts"]
     }
   },
-  "include": ["packages/*/src", "apps/*/src", "packages/*/*.config.ts", "*.config.ts"]
+  "include": ["packages/*/src", "apps/*/src", "packages/*/*.config.ts", "*.config.ts"],
+  // apps/web is bundled by Next's own webpack/Turbopack build, which needs plain
+  // extensionless relative imports (not this project's NodeNext ".js" convention)
+  // and resolves `next/*` subpaths its own way. `next build` type-checks all of
+  // apps/web/src with its own tsconfig (moduleResolution "bundler") instead.
+  "exclude": ["apps/web/src/**"]
 }
