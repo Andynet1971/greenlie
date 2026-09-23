@@ -1,0 +1,43 @@
+# Greenlie — example configuration.
+# Copy to greenlie.config.yml. Secrets go in environment variables: ${LIKE_THIS}.
+# Durations always carry a unit: 500ms, 30s, 5m, 24h, 7d.
+
+defaults:
+  every: 5m      # how often each check runs, unless it says otherwise
+  timeout: 10s
+
+checks:
+  # Plain uptime: is it answering, and fast enough?
+  - id: marketing-site
+    name: Marketing site
+    type: http
+    url: https://example.com
+    slowAfter: 2s
+
+  # The one uptime monitors miss: it answers 200, but with far less than usual.
+  - id: job-feed
+    name: Job feed API
+    type: json-volume
+    url: https://api.example.com/jobs
+    path: $.data.jobs     # the list whose length is the "volume"
+    thinBelow: 0.5        # thin when under half the usual volume
+    baselineWindow: 20    # "usual" = median of the last 20 healthy runs
+    minSamples: 5         # no thin verdict before 5 runs: no false alarm on day one
+    every: 15m
+    headers:
+      Authorization: Bearer ${JOB_FEED_TOKEN}
+
+  # A scheduled job that reports in: POST /ping/<token> when it finishes.
+  - id: nightly-backup
+    name: Nightly backup
+    type: heartbeat
+    every: 24h
+    grace: 30m
+    token: ${BACKUP_PING_TOKEN}
+
+alerts:
+  webhook:
+    url: ${ALERT_WEBHOOK_URL}
+  email:
+    from: greenlie@example.com
+    to: [oncall@example.com]
