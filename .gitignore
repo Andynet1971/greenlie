@@ -8,3 +8,6 @@ test-results/
 .env.*
 !.env.example
 *.log
+
+# The user's own config, not the repo's — see examples/quickstart.yml.
+/greenlie.config.yml

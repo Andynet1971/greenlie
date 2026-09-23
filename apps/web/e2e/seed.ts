@@ -1,5 +1,5 @@
 import { computeBaseline, judgeVolume, type HistoryEntry } from '@greenlie/core';
-import { connect, createStore } from '@greenlie/db';
+import { connect, createStore, runMigrations } from '@greenlie/db';
 
 const DATABASE_URL = process.env.DATABASE_URL ?? 'postgres://postgres:postgres@127.0.0.1:5434/postgres';
 
@@ -18,6 +18,7 @@ async function connectWithRetry(url: string, attempts = 30, delayMs = 500) {
 
 async function main() {
   const connection = await connectWithRetry(DATABASE_URL);
+  await runMigrations(connection.db);
   const store = createStore(connection.db);
   const now = new Date();
   const at = (minutesAgo: number) => new Date(now.getTime() - minutesAgo * 60_000);

@@ -6,7 +6,8 @@
     "scripts":  {
                     "build":  "tsc -p tsconfig.build.json",
                     "start":  "node dist/main.js",
-                    "dev":  "tsx watch src/main.ts"
+                    "dev":  "tsx watch src/main.ts",
+                    "migrate":  "node dist/migrate.js"
                 },
     "dependencies":  {
                          "nodemailer":  "^10.0.10",

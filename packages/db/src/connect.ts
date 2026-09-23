@@ -1,6 +1,6 @@
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { drizzle } from 'drizzle-orm/node-postgres';
+import { drizzle, type NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { migrate } from 'drizzle-orm/node-postgres/migrator';
 import pg from 'pg';
 import type { Database } from './store.js';
@@ -24,6 +24,16 @@ export interface Connection {
 export async function connect(databaseUrl: string): Promise<Connection> {
   const pool = new pg.Pool({ connectionString: databaseUrl, max: 5 });
   const db = drizzle(pool);
-  await migrate(db, { migrationsFolder: MIGRATIONS_FOLDER });
   return { db, close: () => pool.end() };
+}
+
+/**
+ * Applies pending SQL migrations. Run once, from a dedicated step — not on every connect().
+ *
+ * `Database` is the cross-backend interface `Store` is written against (node-postgres in
+ * production, PGlite in tests); the migrator only runs against a real Postgres connection,
+ * which is what every caller of this function actually holds, from `connect()` in this file.
+ */
+export async function runMigrations(db: Database): Promise<void> {
+  await migrate(db as NodePgDatabase<Record<string, unknown>>, { migrationsFolder: MIGRATIONS_FOLDER });
 }

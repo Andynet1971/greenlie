@@ -1,0 +1,16 @@
+node_modules
+**/node_modules
+**/.next
+**/dist
+coverage
+test-results
+playwright-report
+.env
+.env.*
+!.env.example
+*.log
+.git
+.github
+
+# Private notes, not part of the build and never meant to leave this machine.
+STATO_E_ROADMAP.md

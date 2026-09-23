@@ -21,7 +21,9 @@
         "test:watch": "vitest",
         "coverage": "vitest run --coverage",
         "check": "npm run typecheck && npm run lint && npm run coverage",
-        "e2e": "npm run build -w @greenlie/core -w @greenlie/db && playwright test -c apps/web/playwright.config.ts"
+        "e2e": "npm run build -w @greenlie/core -w @greenlie/db && playwright test -c apps/web/playwright.config.ts --grep-invert @screenshots",
+        "screenshots": "npm run build -w @greenlie/core -w @greenlie/db && playwright test -c apps/web/playwright.config.ts --grep @screenshots",
+        "migrate": "npm run migrate -w @greenlie/worker"
     },
     "devDependencies": {
         "@axe-core/playwright": "^4.13.0",

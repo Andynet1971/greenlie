@@ -30,6 +30,7 @@ export default defineConfig({
         '**/*.test.ts',
         '**/index.ts',
         '**/main.ts',
+        'apps/worker/src/migrate.ts',
         '**/testing.ts',
         '**/test-helpers/**',
         'apps/web/src/lib/server.ts',

@@ -1,0 +1,34 @@
+# The quickstart config — no real secrets, works right after `docker compose up`:
+#   cp examples/quickstart.yml greenlie.config.yml
+#   cp .env.example .env
+#   docker compose up
+# greenlie.config.yml is gitignored: it's your config, not the repo's.
+
+defaults:
+  every: 5m
+  timeout: 10s
+
+checks:
+  # Greenlie watching itself — the simplest possible check.
+  - id: self
+    name: This instance
+    type: http
+    url: http://web:3000/healthz
+
+  # A real API, no key needed: GitHub's REST API allows 60 unauthenticated
+  # requests/hour, and one every 10 minutes stays well under that.
+  - id: greenlie-commits
+    name: Greenlie commit history
+    type: json-volume
+    url: https://api.github.com/repos/Andynet1971/greenlie/commits?per_page=20
+    path: $
+    every: 10m
+    thinBelow: 0.5
+
+  # Try it: curl -X POST http://localhost:3000/ping/$QUICKSTART_PING_TOKEN
+  - id: quickstart-heartbeat
+    name: Quickstart heartbeat
+    type: heartbeat
+    every: 1h
+    grace: 15m
+    token: ${QUICKSTART_PING_TOKEN}

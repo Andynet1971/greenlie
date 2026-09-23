@@ -2,7 +2,7 @@ import { PGlite } from '@electric-sql/pglite';
 import { sql } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/pglite';
 import { migrate } from 'drizzle-orm/pglite/migrator';
-import { MIGRATIONS_FOLDER, connect, type Connection } from './connect.js';
+import { MIGRATIONS_FOLDER, connect, runMigrations, type Connection } from './connect.js';
 
 /**
  * A real, migrated, empty Postgres for one test file.
@@ -15,6 +15,7 @@ export async function createTestDatabase(): Promise<Connection> {
   const url = process.env.TEST_DATABASE_URL;
   if (url) {
     const connection = await connect(url);
+    await runMigrations(connection.db);
     await connection.db.execute(sql`truncate table runs, check_state restart identity`);
     return connection;
   }
