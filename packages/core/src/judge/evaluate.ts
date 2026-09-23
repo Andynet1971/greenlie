@@ -37,5 +37,7 @@ export function evaluateProbe(
 
   const baseline = computeBaseline(history, rules.volume);
   const volume = judgeVolume(measured.volume, baseline, rules.volume.thinBelow);
-  return { ...worst(response, volume), volume: measured.volume };
+  // Volume first: on a tie its reason wins, so a recovery reads
+  // "delivered 97, usual is 100" instead of "answered 200 in 40ms".
+  return { ...worst(volume, response), volume: measured.volume };
 }

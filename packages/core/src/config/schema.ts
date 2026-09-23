@@ -34,6 +34,8 @@ const probe = {
   expectStatus: z.array(z.int().min(100).max(599)).min(1).default([200]),
   slowAfter: duration.optional(),
   headers: z.record(z.string(), z.string()).optional(),
+  // Runs in a row that must agree before an alert goes out: one blip is not an outage.
+  confirmations: z.int().min(1).max(10).default(2),
 };
 
 const httpCheck = z.object({

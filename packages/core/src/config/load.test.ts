@@ -41,6 +41,7 @@ describe('loadConfig — resolving', () => {
           everyMs: 300_000,
           timeoutMs: 10_000,
           headers: {},
+          confirmations: 2,
           rules: { expectStatus: [200], slowAfterMs: undefined, volume: undefined },
         },
       ],

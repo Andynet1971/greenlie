@@ -48,10 +48,10 @@ describe('evaluateProbe', () => {
     });
   });
 
-  it('is ok when the volume is usual', () => {
+  it('is ok when the volume is usual, and says so in volume terms', () => {
     expect(evaluateProbe(jobs(97), volumeRules, usual)).toEqual({
       verdict: 'ok',
-      reason: 'answered 200 in 100ms',
+      reason: 'delivered 97, usual is 100',
       volume: 97,
     });
   });

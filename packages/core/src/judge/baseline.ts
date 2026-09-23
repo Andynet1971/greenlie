@@ -25,7 +25,9 @@ export type Baseline =
  * down until "broken" became "usual" and the alarm switched itself off —
  * the silent failure this project exists to catch.
  */
-const HEALTHY: ReadonlySet<Verdict> = new Set(['ok', 'unknown', 'slow']);
+export const BASELINE_VERDICTS = ['ok', 'unknown', 'slow'] as const satisfies readonly Verdict[];
+
+const HEALTHY: ReadonlySet<Verdict> = new Set(BASELINE_VERDICTS);
 
 export function computeBaseline(history: readonly HistoryEntry[], rules: BaselineRules): Baseline {
   const volumes = history

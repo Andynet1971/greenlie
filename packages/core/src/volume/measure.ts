@@ -10,6 +10,10 @@ export type Measurement = { ok: true; volume: number } | { ok: false; error: str
  * failures, and conflating them would hide the first behind the second.
  */
 export function measureVolume(body: unknown, path: string): Measurement {
+  // The worker hands over raw text when the body did not parse as JSON.
+  if (typeof body === 'string') {
+    return { ok: false, error: 'the response is not JSON' };
+  }
   const resolved = resolvePath(body, parsePath(path));
   if (!resolved.found) {
     return { ok: false, error: `the response has nothing at ${resolved.missing}` };

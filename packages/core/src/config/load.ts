@@ -13,6 +13,7 @@ export interface ProbeCheck {
   everyMs: number;
   timeoutMs: number;
   headers: Readonly<Record<string, string>>;
+  confirmations: number;
   rules: ProbeRules;
 }
 
@@ -21,6 +22,7 @@ export interface HeartbeatCheck {
   id: string;
   name: string;
   token: string;
+  /** No confirmations here: the grace period already is one. */
   rules: HeartbeatRules;
 }
 
@@ -64,7 +66,13 @@ function resolve(raw: RawConfig): GreenlieConfig {
   const checks = raw.checks.map((check): Check => {
     const name = check.name ?? check.id;
     if (check.type === 'heartbeat') {
-      return { type: 'heartbeat', id: check.id, name, token: check.token, rules: { everyMs: check.every, graceMs: check.grace } };
+      return {
+        type: 'heartbeat',
+        id: check.id,
+        name,
+        token: check.token,
+        rules: { everyMs: check.every, graceMs: check.grace },
+      };
     }
     return {
       type: check.type,
@@ -74,6 +82,7 @@ function resolve(raw: RawConfig): GreenlieConfig {
       everyMs: check.every ?? raw.defaults.every,
       timeoutMs: check.timeout ?? raw.defaults.timeout,
       headers: check.headers ?? {},
+      confirmations: check.confirmations,
       rules: {
         expectStatus: check.expectStatus,
         slowAfterMs: check.slowAfter,

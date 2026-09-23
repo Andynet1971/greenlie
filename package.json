@@ -1,30 +1,39 @@
 {
-  "name": "greenlie",
-  "private": true,
-  "description": "Your monitoring is green. Is it lying? A status page that catches silent failures.",
-  "license": "MIT",
-  "type": "module",
-  "engines": {
-    "node": ">=20"
-  },
-  "workspaces": [
-    "packages/*"
-  ],
-  "scripts": {
+    "name": "greenlie",
+    "private": true,
+    "description": "Your monitoring is green. Is it lying? A status page that catches silent failures.",
+    "license": "MIT",
+    "type": "module",
+    "engines": {
+        "node": ">=20"
+    },
+    "workspaces": [
+        "packages/core",
+        "packages/db",
+        "apps/worker"
+    ],
+    "scripts": {
+        "build": "npm run build -w @greenlie/core -w @greenlie/db -w @greenlie/worker",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint .",
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "coverage": "vitest run --coverage",
-    "check": "npm run typecheck && npm run lint && npm run coverage"
-  },
-  "devDependencies": {
-    "@eslint/js": "^10.0.1",
-    "@types/node": "^26.6.2",
-    "@vitest/coverage-v8": "^5.0.1",
-    "eslint": "^10.11.0",
-    "typescript": "^6.0.3",
-    "typescript-eslint": "^8.70.1",
-    "vitest": "^5.0.1"
-  }
+        "lint": "eslint .",
+        "test": "vitest run",
+        "test:watch": "vitest",
+        "coverage": "vitest run --coverage",
+        "check": "npm run typecheck && npm run lint && npm run coverage"
+    },
+    "devDependencies": {
+        "@electric-sql/pglite": "^0.5.8",
+        "@electric-sql/pglite-socket": "^0.2.11",
+        "@eslint/js": "^10.0.1",
+        "@types/node": "^26.6.2",
+        "@types/nodemailer": "^8.0.2",
+        "@types/pg": "^8.23.1",
+        "@vitest/coverage-v8": "^5.0.1",
+        "drizzle-kit": "^0.31.11",
+        "eslint": "^10.11.0",
+        "tsx": "^4.23.15",
+        "typescript": "^6.0.3",
+        "typescript-eslint": "^8.70.1",
+        "vitest": "^5.0.1"
+    }
 }

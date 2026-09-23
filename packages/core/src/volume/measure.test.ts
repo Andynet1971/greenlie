@@ -30,10 +30,11 @@ describe('measureVolume', () => {
     expect(measureVolume(body, '$.items')).toEqual({ ok: false, error: `expected a list at $.items, found ${found}` });
   });
 
-  it('handles a body that is not JSON at all', () => {
-    expect(measureVolume('<html>maintenance</html>', '$.items')).toEqual({
-      ok: false,
-      error: 'the response has nothing at $.items',
-    });
+  it('says so when the body is not JSON at all — the maintenance page case', () => {
+    expect(measureVolume('<html>maintenance</html>', '$.items')).toEqual({ ok: false, error: 'the response is not JSON' });
+  });
+
+  it('reports a missing path inside a body that is not an object', () => {
+    expect(measureVolume(42, '$.items')).toEqual({ ok: false, error: 'the response has nothing at $.items' });
   });
 });
