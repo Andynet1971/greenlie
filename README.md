@@ -9,6 +9,14 @@ it usually does?"**. A service that answers `200 OK` with a tenth of its usual
 content is not up — it's a silent failure, and it's exactly the kind of outage
 that green dashboards miss.
 
+## Live demo
+
+**<https://greenlie.18-159-116-161.sslip.io>** — a public instance watching real
+production services: two Atlassian Marketplace listings, a Chrome extension's
+website, a blog, and an Apify scraper whose output volume is checked on every
+run. It runs from the published images with `docker compose`, behind Caddy for
+HTTPS, on a small AWS Lightsail server.
+
 ## Screenshots
 
 <picture>
